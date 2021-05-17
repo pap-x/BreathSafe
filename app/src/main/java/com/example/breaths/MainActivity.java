@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public void getData(String lat, String lon) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://api.openweathermap.org/data/2.5/air_pollution?lat="+lat+"&lon="+lon+"&appid=2bcdd94a20ae1c5acd2f35b063bb3a0f";
+        String url = "https://api.openweathermap.org/data/2.5/air_pollution?lat="+lat+"&lon="+lon+"&appid="; //2bcdd94a20ae1c5acd2f35b063bb3a0f";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
