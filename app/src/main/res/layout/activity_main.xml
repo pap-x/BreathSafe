@@ -38,18 +38,18 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="BreathSafe"
+                android:text="BreatheSafe"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <ImageButton
-                android:id="@+id/imageButton4"
+                android:id="@+id/settingsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:backgroundTint="#00EEF2F3"
-                android:rotationX="9"
-                android:tint="#000902"
-                app:srcCompat="@drawable/settings" />
+                android:tint="#323232"
+                app:srcCompat="@drawable/ic_baseline_settings_48" />
 
         </LinearLayout>
 
