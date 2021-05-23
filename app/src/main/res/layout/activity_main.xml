@@ -28,7 +28,6 @@
                 android:layout_width="79dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:rotation="1"
                 android:rotationY="180"
                 tools:srcCompat="@drawable/breath" />
 
@@ -43,7 +42,7 @@
                 android:textStyle="bold" />
 
             <ImageButton
-                android:id="@+id/settingsButton"
+                android:id="@+id/homeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
