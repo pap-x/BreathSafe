@@ -33,8 +33,10 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
     protected LocationManager locationManager;
     protected LocationListener locationListener;
     protected Context context;
-    TextView txtLat;
-    String location_GPS = "no GPS SIGNAL";
+
+    String location_GPS  ;
+    String namme ;
+
     String provider;
     protected String latitude, longitude;
     protected boolean gps_enabled, network_enabled;
@@ -87,13 +89,19 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
         EditText editName  = (EditText) findViewById(R.id.name_edittext);
 
         final Button save_button = findViewById(R.id.save_button);
+
         save_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                MyDBHandler dbHandler = new MyDBHandler(Settings.this, null, null, 1);
+
                 // Code here executes on main thread after user presses save button
                 String name = editName.getText().toString();
                 Long conditionId = spinner.getSelectedItemId();
+                  namme =name;
 
-                Toast.makeText(Settings.this, name + " " + conditionId.toString(), Toast.LENGTH_SHORT).show();
+
+
+                Toast.makeText(Settings.this, name + " " + location_GPS, Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -107,6 +115,22 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
             }
         });
     }
+
+    public void getGP  (View view) {
+
+        MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
+        Data data = new Data(namme,location_GPS);
+
+        dbHandler.addUserInfo(data);
+
+
+
+    }
+
+
+
+
+
     public void getGPSlocation (View view) {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(Settings.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Settings.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -119,5 +143,12 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
 
 
     }
+
+
+
+
+
+
+
 
 }

@@ -46,7 +46,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 TABLE_CONDITIONS + "(" +
                 COLUMN_CONDITIONS_ID + " INTEGER PRIMARY KEY," +
                 COLUMN_CONDITION + " TEXT" + ")";
-        db.execSQL(CREATE_TABLE_CONDITIONS);
+      //  db.execSQL(CREATE_TABLE_CONDITIONS);
         //Create
         String CREATE_TABLE_POLLUTANTS = "CREATE TABLE " +
                 TABLE_POLLUTANTS + "(" +
@@ -56,7 +56,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 COLUMN_POLLUTANTS_MEDIUM + " INTEGER," +
                 COLUMN_POLLUTANTS_HIGH + " INTEGER," +
                 COLUMN_POLLUTANTS_DANGER + " INTEGER" +")";
-        db.execSQL(CREATE_TABLE_POLLUTANTS);
+        //db.execSQL(CREATE_TABLE_POLLUTANTS);
         //Create
         String CREATE_TABLE_TEXT = "CREATE TABLE " +
                 TABLE_TEXT + "(" +
@@ -64,13 +64,13 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 COLUMN_POLLUTANTS_ID + " INTEGER,"+
                 COLUMN_INDEX + " INTEGER," +
                 COLUMN_TEXT + " TEXT" +")";
-        db.execSQL(CREATE_TABLE_TEXT);
+      //  db.execSQL(CREATE_TABLE_TEXT);
         //Create
         String CREATE_TABLE_USER = "CREATE TABLE " +
                 TABLE_USER + "(" +
                 COLUMN_USER_ID + " INTEGER PRIMARY KEY," +
-                COLUMN_USER_NAME + " TEXT," +
-                COLUMN_LOCATION + " TEXT" + ")";
+                COLUMN_USER_NAME + " TEXT,"+
+                COLUMN_LOCATION + "TEXT" + ")";
         db.execSQL(CREATE_TABLE_USER);
     }
     @Override
@@ -83,6 +83,16 @@ public class MyDBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    //Μέθοδος για προσθήκη ενός προϊόντος στη ΒΔ
+    public void addUserInfo(Data data) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_NAME, data.getUserName());
+       // values.put(COLUMN_CONDITIONS_ID, data.getConditionnId());
+        values.put(COLUMN_LOCATION, data.getLocationGPS());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_USER, null, values);
+        db.close();
+    }
 
 
 
