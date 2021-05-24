@@ -1,8 +1,11 @@
 package com.example.breaths;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -12,7 +15,59 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class Settings extends AppCompatActivity {
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.widget.TextView;
+
+import android.util.Log;
+
+public class  Settings extends AppCompatActivity  implements LocationListener {
+
+
+
+
+    protected LocationManager locationManager;
+    protected LocationListener locationListener;
+    protected Context context;
+    TextView txtLat;
+    String location_GPS = "no GPS SIGNAL";
+    String provider;
+    protected String latitude, longitude;
+    protected boolean gps_enabled, network_enabled;
+
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        String loc_GPS =("Gps: " + location.getLatitude() + "," + location.getLongitude());
+        ///Toast.makeText(Settings.this, location_GPS, Toast.LENGTH_SHORT).show();
+        location_GPS = loc_GPS;
+     }
+
+    @Override
+    public void onStatusChanged(String s, int status, Bundle extras) {
+        Log.d("Latitude", "status");
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Log.d("Latitude", "enable");
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Log.d("Latitude", "disable");
+
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +94,7 @@ public class Settings extends AppCompatActivity {
                 Long conditionId = spinner.getSelectedItemId();
 
                 Toast.makeText(Settings.this, name + " " + conditionId.toString(), Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -51,4 +107,17 @@ public class Settings extends AppCompatActivity {
             }
         });
     }
+    public void getGPSlocation (View view) {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(Settings.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Settings.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(Settings.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
+
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
+
+    }
+
 }

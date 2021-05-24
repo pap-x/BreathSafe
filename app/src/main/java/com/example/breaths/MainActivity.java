@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getData("40.674972", "22.895322");
 
+
         final ImageButton button = findViewById(R.id.homeButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -126,4 +127,11 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+
+    //On click name
+
+
+
+
 }
