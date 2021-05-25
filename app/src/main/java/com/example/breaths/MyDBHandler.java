@@ -2,6 +2,7 @@ package com.example.breaths;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -28,7 +29,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     //Table User
     public static final String TABLE_USER= "conditions_Table";
     public static final String COLUMN_USER_ID = "id_user";
-    public static final String COLUMN_USER_NAME = "user_name";
+    public static final String COLUMN_USER_NAME_U = "userName";
     public static final String COLUMN_LOCATION = "location";
 
 
@@ -46,7 +47,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 TABLE_CONDITIONS + "(" +
                 COLUMN_CONDITIONS_ID + " INTEGER PRIMARY KEY," +
                 COLUMN_CONDITION + " TEXT" + ")";
-      //  db.execSQL(CREATE_TABLE_CONDITIONS);
+         db.execSQL(CREATE_TABLE_CONDITIONS);
         //Create
         String CREATE_TABLE_POLLUTANTS = "CREATE TABLE " +
                 TABLE_POLLUTANTS + "(" +
@@ -56,7 +57,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 COLUMN_POLLUTANTS_MEDIUM + " INTEGER," +
                 COLUMN_POLLUTANTS_HIGH + " INTEGER," +
                 COLUMN_POLLUTANTS_DANGER + " INTEGER" +")";
-        //db.execSQL(CREATE_TABLE_POLLUTANTS);
+        db.execSQL(CREATE_TABLE_POLLUTANTS);
         //Create
         String CREATE_TABLE_TEXT = "CREATE TABLE " +
                 TABLE_TEXT + "(" +
@@ -64,21 +65,21 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 COLUMN_POLLUTANTS_ID + " INTEGER,"+
                 COLUMN_INDEX + " INTEGER," +
                 COLUMN_TEXT + " TEXT" +")";
-      //  db.execSQL(CREATE_TABLE_TEXT);
+          db.execSQL(CREATE_TABLE_TEXT);
         //Create
         String CREATE_TABLE_USER = "CREATE TABLE " +
                 TABLE_USER + "(" +
                 COLUMN_USER_ID + " INTEGER PRIMARY KEY," +
-                COLUMN_USER_NAME + " TEXT,"+
-                COLUMN_LOCATION + "TEXT" + ")";
+                COLUMN_USER_NAME_U + " TEXT,"+
+                COLUMN_LOCATION + " TEXT" + ")";
         db.execSQL(CREATE_TABLE_USER);
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion,
                           int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONDITIONS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_POLLUTANTS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEXT);
+          db.execSQL("DROP TABLE IF EXISTS " + TABLE_POLLUTANTS);
+         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEXT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         onCreate(db);
     }
@@ -86,8 +87,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     //Μέθοδος για προσθήκη ενός προϊόντος στη ΒΔ
     public void addUserInfo(Data data) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_NAME, data.getUserName());
-       // values.put(COLUMN_CONDITIONS_ID, data.getConditionnId());
+        values.put(COLUMN_USER_NAME_U, data.getUserName());
         values.put(COLUMN_LOCATION, data.getLocationGPS());
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_USER, null, values);
@@ -95,6 +95,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
 
+
+   
 
 
 

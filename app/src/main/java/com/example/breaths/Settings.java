@@ -31,24 +31,17 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
 
 
     protected LocationManager locationManager;
-    protected LocationListener locationListener;
-    protected Context context;
 
     String location_GPS  ;
-    String namme ;
 
-    String provider;
-    protected String latitude, longitude;
-    protected boolean gps_enabled, network_enabled;
 
 
 
     @Override
     public void onLocationChanged(Location location) {
 
-        String loc_GPS =("Gps: " + location.getLatitude() + "," + location.getLongitude());
-        ///Toast.makeText(Settings.this, location_GPS, Toast.LENGTH_SHORT).show();
-        location_GPS = loc_GPS;
+        String loc_GPS = (location.getLatitude()+","+location.getLatitude());
+         location_GPS = loc_GPS;
      }
 
     @Override
@@ -96,13 +89,16 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
 
                 // Code here executes on main thread after user presses save button
                 String name = editName.getText().toString();
-                Long conditionId = spinner.getSelectedItemId();
-                  namme =name;
+                long conditionId = spinner.getSelectedItemId();
 
 
 
-                Toast.makeText(Settings.this, name + " " + location_GPS, Toast.LENGTH_SHORT).show();
+                if(!(name == "")) {
 
+                    Data data = new Data(name, location_GPS );
+                    dbHandler.addUserInfo(data);
+                    Toast.makeText(Settings.this, conditionId + " " + location_GPS, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -116,16 +112,7 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
         });
     }
 
-    public void getGP  (View view) {
 
-        MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
-        Data data = new Data(namme,location_GPS);
-
-        dbHandler.addUserInfo(data);
-
-
-
-    }
 
 
 
@@ -140,6 +127,9 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
+        Toast.makeText(Settings.this,     location_GPS, Toast.LENGTH_SHORT).show();
+
 
 
     }
