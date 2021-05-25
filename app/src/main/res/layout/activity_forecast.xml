@@ -54,34 +54,35 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2">
 
         <RelativeLayout
-            android:id="@+id/accordion_header"
+            android:id="@+id/accordion_header1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_green_light"
+            android:background="#BFE355"
             android:clickable="true">
 
             <TextView
-                android:id="@+id/accordion_title"
+                android:id="@+id/accordion_title1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="Monday"
+                android:text="@string/first_day"
                 android:textColor="#333"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <ImageButton
-                android:id="@+id/down_btn"
+                android:id="@+id/down_btn1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:onClick="expandableButton1"
                 android:layout_margin="4dp"
                 android:backgroundTint="#00FFFFFF"
                 android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
         </RelativeLayout>
 
         <com.github.aakira.expandablelayout.ExpandableLinearLayout
-            android:id="@+id/content"
+            android:id="@+id/content1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -91,7 +92,15 @@
             app:ael_duration="500"
             app:ael_expanded="false"
             app:ael_orientation="vertical">
-            <!--add your content here -->
+            <TextView
+                android:id="@+id/pm2_5_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/fourth_day"
+                android:textColor="#333"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </com.github.aakira.expandablelayout.ExpandableLinearLayout>
 
         <!--Second day-->
@@ -107,7 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="Tuesday"
+                android:text="@string/second_day"
                 android:textColor="#333"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -117,6 +126,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:onClick="expandableButton2"
                 android:layout_margin="4dp"
                 android:backgroundTint="#00FFFFFF"
                 android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
@@ -133,7 +143,15 @@
             app:ael_duration="500"
             app:ael_expanded="false"
             app:ael_orientation="vertical">
-            <!--add your content here -->
+            <TextView
+                android:id="@+id/pm2_5_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/fourth_day"
+                android:textColor="#333"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
         </com.github.aakira.expandablelayout.ExpandableLinearLayout>
 
         <!--Third day-->
@@ -141,7 +159,7 @@
             android:id="@+id/accordion_header3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_red_light"
+            android:background="#F38181"
             android:clickable="true">
 
             <TextView
@@ -149,7 +167,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="Wednesday"
+                android:text="@string/third_day"
                 android:textColor="#333"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -159,6 +177,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:onClick="expandableButton3"
                 android:layout_margin="4dp"
                 android:backgroundTint="#00FFFFFF"
                 android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
@@ -175,7 +194,66 @@
             app:ael_duration="500"
             app:ael_expanded="false"
             app:ael_orientation="vertical">
-            <!--add your content here -->
+            <TextView
+                android:id="@+id/pm2_5_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/fourth_day"
+                android:textColor="#333"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+        </com.github.aakira.expandablelayout.ExpandableLinearLayout>
+
+        <!--Fourth day-->
+        <RelativeLayout
+            android:id="@+id/accordion_header4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFD580"
+            android:clickable="true">
+
+            <TextView
+                android:id="@+id/accordion_title4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/fourth_day"
+                android:textColor="#333"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/down_btn4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:onClick="expandableButton4"
+                android:layout_margin="4dp"
+                android:backgroundTint="#00FFFFFF"
+                android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+        </RelativeLayout>
+
+        <com.github.aakira.expandablelayout.ExpandableLinearLayout
+            android:id="@+id/content4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingBottom="14dp"
+            app:ael_duration="500"
+            app:ael_expanded="false"
+            app:ael_orientation="vertical">
+            <TextView
+                android:id="@+id/pm2_5_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/fourth_day"
+                android:textColor="#333"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
         </com.github.aakira.expandablelayout.ExpandableLinearLayout>
 
     </LinearLayout>
