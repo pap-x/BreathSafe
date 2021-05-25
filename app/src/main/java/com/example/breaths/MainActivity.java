@@ -3,10 +3,12 @@ package com.example.breaths;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +23,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -30,21 +34,19 @@ public class MainActivity extends AppCompatActivity {
         getData("40.674972", "22.895322");
 
 
-
-
-
-
-
-
-
-
-
-
-
-        final ImageButton button = findViewById(R.id.homeButton);
+        final ImageButton button = findViewById(R.id.settingsButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent myIntent = new Intent(MainActivity.this, Settings.class);
+                //myIntent.putExtra("key", value); //Optional parameters
+                MainActivity.this.startActivity(myIntent);
+            }
+        });
+
+        final Button forecast_button = findViewById(R.id.forecast);
+        forecast_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent myIntent = new Intent(MainActivity.this, Forecast.class);
                 //myIntent.putExtra("key", value); //Optional parameters
                 MainActivity.this.startActivity(myIntent);
             }
@@ -58,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
     public void getData(String lat, String lon) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://api.openweathermap.org/data/2.5/air_pollution?lat="+lat+"&lon="+lon+"&appid="; //2bcdd94a20ae1c5acd2f35b063bb3a0f";
-        String forecast_url = "https://api.openweathermap.org/data/2.5/air_pollution/forecast?lat="+lat+"&lon="+lon+"&appid=";  //2bcdd94a20ae1c5acd2f35b063bb3a0f";
+        String url = "https://api.openweathermap.org/data/2.5/air_pollution?lat="+lat+"&lon="+lon+"&appid=2bcdd94a20ae1c5acd2f35b063bb3a0f";
+        String forecast_url = "https://api.openweathermap.org/data/2.5/air_pollution/forecast?lat="+lat+"&lon="+lon+"&appid=2bcdd94a20ae1c5acd2f35b063bb3a0f";
 
         //*****************GET THE CURRENT VALUES***********************
         // Request a JSON response for the current values from the provided URL.
@@ -71,8 +73,15 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject details = response.getJSONArray("list").getJSONObject(0);
                         String aqi = details.getJSONObject("main").getString("aqi");
                         JSONObject pollutants = details.getJSONObject("components");
+
+                        //Get day of the week
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE");
+                        Date date = new java.util.Date(Long.valueOf(details.getInt("dt"))*1000);
+                        String day = dateFormat.format(date );
+                        System.out.println(day);
+
                         // Display the response string.
-                       // Toast.makeText(MainActivity.this, aqi + " " + pollutants.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, day + " " + pollutants.toString(), Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -80,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                  //  Toast.makeText(MainActivity.this, "An error occurred!", Toast.LENGTH_SHORT).show();
-                  //  Log.i("error", String.valueOf(error));
+                    Toast.makeText(MainActivity.this, "An error occurred!", Toast.LENGTH_SHORT).show();
+                    Log.i("error", String.valueOf(error));
                 }
             }
         );
@@ -116,8 +125,8 @@ public class MainActivity extends AppCompatActivity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    //Toast.makeText(MainActivity.this, "An error occurred!", Toast.LENGTH_SHORT).show();
-                   // Log.i("error", String.valueOf(error));
+                    Toast.makeText(MainActivity.this, "An error occurred!", Toast.LENGTH_SHORT).show();
+                    Log.i("error", String.valueOf(error));
                 }
             }
         );
