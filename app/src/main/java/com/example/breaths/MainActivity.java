@@ -30,6 +30,17 @@ public class MainActivity extends AppCompatActivity {
         getData("40.674972", "22.895322");
 
 
+
+
+
+
+
+
+
+
+
+
+
         final ImageButton button = findViewById(R.id.homeButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -61,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                         String aqi = details.getJSONObject("main").getString("aqi");
                         JSONObject pollutants = details.getJSONObject("components");
                         // Display the response string.
-                        Toast.makeText(MainActivity.this, aqi + " " + pollutants.toString(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(MainActivity.this, aqi + " " + pollutants.toString(), Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -69,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(MainActivity.this, "An error occurred!", Toast.LENGTH_SHORT).show();
-                    Log.i("error", String.valueOf(error));
+                  //  Toast.makeText(MainActivity.this, "An error occurred!", Toast.LENGTH_SHORT).show();
+                  //  Log.i("error", String.valueOf(error));
                 }
             }
         );
@@ -105,8 +116,8 @@ public class MainActivity extends AppCompatActivity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(MainActivity.this, "An error occurred!", Toast.LENGTH_SHORT).show();
-                    Log.i("error", String.valueOf(error));
+                    //Toast.makeText(MainActivity.this, "An error occurred!", Toast.LENGTH_SHORT).show();
+                   // Log.i("error", String.valueOf(error));
                 }
             }
         );

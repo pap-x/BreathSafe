@@ -71,11 +71,11 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="64dp"
+        android:background="@drawable/info_page_button"
         android:onClick="getGPSlocation"
         android:text="@string/get_location"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.477"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkBox" />
@@ -83,10 +83,11 @@
     <Button
         android:id="@+id/save_button"
         android:layout_width="wrap_content"
-        android:layout_height="64dp"
+        android:layout_height="60dp"
         android:layout_marginStart="64dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="64dp"
+        android:background="@drawable/info_page_button"
         android:text="@string/save"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -108,22 +109,26 @@
 
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="61dp"
-        android:background="@drawable/constmaincolor"
         android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="79dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:rotationY="180"
-            tools:srcCompat="@drawable/breath" />
+            android:rotationY="181"
+            app:srcCompat="@drawable/breath" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/textView3"
@@ -143,19 +148,7 @@
             android:backgroundTint="#00EEF2F3"
             android:tint="#323232"
             app:srcCompat="@drawable/ic_baseline_home_48" />
-    </LinearLayout>
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="53dp"
-        android:layout_marginTop="648dp"
-        android:layout_marginEnd="267dp"
-        android:onClick="getGP"
-        android:text="test db"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

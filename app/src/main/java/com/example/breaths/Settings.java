@@ -32,7 +32,7 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
 
     protected LocationManager locationManager;
 
-    String location_GPS  ;
+    String location_GPS = null ;
 
 
 
@@ -46,19 +46,16 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
 
     @Override
     public void onStatusChanged(String s, int status, Bundle extras) {
-        Log.d("Latitude", "status");
 
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-        Log.d("Latitude", "enable");
 
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-        Log.d("Latitude", "disable");
 
     }
 
@@ -93,11 +90,23 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
 
 
 
-                if(!(name == "")) {
+                if(!(name.equals(""))     &&  !(location_GPS == null)) {
+
+
+
+
+
 
                     Data data = new Data(name, location_GPS );
                     dbHandler.addUserInfo(data);
-                    Toast.makeText(Settings.this, conditionId + " " + location_GPS, Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(Settings.this, name, Toast.LENGTH_SHORT).show();
+                }else if(!(name.equals(""))){
+                    Toast.makeText(Settings.this, "Push the <GET LOCATION> button,please", Toast.LENGTH_SHORT).show();
+
+                }else {
+                    Toast.makeText(Settings.this, "Name is empty ", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
@@ -127,13 +136,13 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        Toast.makeText(Settings.this, "Location is on", Toast.LENGTH_SHORT).show();
 
-        Toast.makeText(Settings.this,     location_GPS, Toast.LENGTH_SHORT).show();
+
 
 
 
     }
-
 
 
 

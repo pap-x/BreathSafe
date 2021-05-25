@@ -4,6 +4,7 @@
     <string name="notifications">Notifications</string>
     <string name="get_location">Get Location</string>
     <string name="save">Save</string>
+    <string name="Hello">Hello</string>
     <string-array name="conditions_array">
         <item>No Condition</item>
         <item>Older adult</item>
