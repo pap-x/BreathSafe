@@ -40,7 +40,7 @@ public class MyDBHandler extends SQLiteAssetHelper {
     public static final String COLUMN_TEXT_ID = "COLUMN_TEXT_ID";
 
 
-    public MyDBHandler(Context context, Object o, Object o1, int i) {
+    public MyDBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

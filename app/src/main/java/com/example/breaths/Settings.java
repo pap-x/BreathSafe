@@ -85,7 +85,7 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
 
         save_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                MyDBHandler dbHandler = new MyDBHandler(Settings.this, null, null, 1);
+                MyDBHandler dbHandler = new MyDBHandler(Settings.this);
 
                 // Code here executes on main thread after user presses save button
                 String name = editName.getText().toString();
