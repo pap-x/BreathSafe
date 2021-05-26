@@ -7,6 +7,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -65,6 +67,7 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         //Show dropdown for conditions
         Spinner spinner = (Spinner) findViewById(R.id.condition_spinner);
@@ -114,6 +117,19 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
         final ImageButton home_button = findViewById(R.id.homeButton);
         home_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                final VibrationEffect vibrationEffect1;
+                final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+                // this is the only type of the vibration which requires system version Oreo (API 26)
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+                    // this effect creates the vibration of default amplitude for 1000ms(1 sec)
+                    vibrationEffect1 = VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE);
+
+                    // it is safe to cancel other vibrations currently taking place
+                    vibrator.cancel();
+                    vibrator.vibrate(vibrationEffect1);
+                }
                 Intent myIntent = new Intent(Settings.this, MainActivity.class);
                 //myIntent.putExtra("key", value); //Optional parameters
                 Settings.this.startActivity(myIntent);

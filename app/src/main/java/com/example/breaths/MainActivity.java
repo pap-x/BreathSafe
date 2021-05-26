@@ -2,9 +2,15 @@ package com.example.breaths;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,16 +33,38 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getData("40.674972", "22.895322");
+        final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
 
         final ImageButton button = findViewById(R.id.settingsButton);
+
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+                final VibrationEffect vibrationEffect1;
+
+                // this is the only type of the vibration which requires system version Oreo (API 26)
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+                    // this effect creates the vibration of default amplitude for 1000ms(1 sec)
+                    vibrationEffect1 = VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE);
+
+                    // it is safe to cancel other vibrations currently taking place
+                    vibrator.cancel();
+                    vibrator.vibrate(vibrationEffect1);
+                }
+
+
+
+
+
+
                 Intent myIntent = new Intent(MainActivity.this, Settings.class);
                 //myIntent.putExtra("key", value); //Optional parameters
                 MainActivity.this.startActivity(myIntent);
@@ -54,7 +82,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+
     }
+
+
 
     //API call to get data
     public void getData(String lat, String lon) {

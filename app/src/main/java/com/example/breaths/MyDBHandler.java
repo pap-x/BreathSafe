@@ -48,7 +48,7 @@ public class MyDBHandler extends SQLiteAssetHelper {
 
 
 
-    //Μέθοδος για προσθήκη ενός προϊόντος στη ΒΔ
+    //method to add data to the db
     public void addUserInfo(Data data) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_NAME, data.getUserName());
@@ -57,6 +57,8 @@ public class MyDBHandler extends SQLiteAssetHelper {
         db.insert(TABLE_USER, null, values);
         db.close();
     }
+
+
     public void onUpgrade(SQLiteDatabase db, int oldVersion,
                           int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
