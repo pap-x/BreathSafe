@@ -7,17 +7,17 @@
         android:bottomRightRadius="78dp"
         />
     <gradient
-        android:angle="225"
-        android:centerX="35%"
+        android:angle="270"
+        android:centerX="50%"
         android:centerColor="#15E1E8"
-        android:startColor="#3DDAE8"
+        android:startColor="#09AFF1"
         android:endColor="#09AFF1"
         android:type="linear"
         />
     <padding
-        android:left="0dp"
+        android:left="10dp"
         android:top="0dp"
-        android:right="0dp"
+        android:right="10dp"
         android:bottom="0dp"
         />
     <size
