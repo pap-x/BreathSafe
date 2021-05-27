@@ -59,11 +59,11 @@
 
             <TextView
                 android:id="@+id/text_hello"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="154dp"
+                android:layout_height="34dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="40dp"
-                android:layout_marginEnd="259dp"
+                android:layout_marginEnd="200dp"
                 android:text="@string/Hello"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"

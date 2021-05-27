@@ -3,7 +3,6 @@ package com.example.breaths;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
@@ -45,19 +44,16 @@ public class MyDBHandler extends SQLiteAssetHelper {
     }
 
 
-
-
-
     //method to add data to the db
-    public void addUserInfo(Data data) {
+    public void addUserInfo(DataUser data) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_NAME, data.getUserName());
         values.put(COLUMN_LOCATION, data.getLocationGPS());
+        values.put(COLUMN_CONDITION_ID, data.getCondId());
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_USER, null, values);
         db.close();
     }
-
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion,
                           int newVersion) {
