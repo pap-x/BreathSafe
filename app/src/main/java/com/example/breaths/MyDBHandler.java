@@ -44,6 +44,7 @@ public class MyDBHandler extends SQLiteAssetHelper {
     }
 
 
+
     //method to add data to the db
     public void addUserInfo(DataUser data) {
         ContentValues values = new ContentValues();
