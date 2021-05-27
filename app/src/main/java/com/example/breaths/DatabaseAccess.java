@@ -77,7 +77,18 @@ public class DatabaseAccess {
      *
      * @return a List of quotes
      */
+    public List<String> getQuotes() {
+        List<String> list = new ArrayList<>();
 
+        Cursor cursor = database.rawQuery("SELECT COLUMN_USER_NAME FROM " + TABLE_USER +  "" , null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            list.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return list;
+    }
 
 
 

@@ -35,6 +35,10 @@ import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private TextView textHello;
+
+
+
 
     class Pollutants {
         public String day, aqi, pm2_5, pm10, o3, co, so2, no2;
@@ -54,27 +58,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getData("40.674972", "22.895322");
-        final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
+        //Get the name from database or go to settting activity
+        this.textHello = (TextView) findViewById(R.id.text_hello);
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess.open();
+
+        if (!(databaseAccess.getHello().equals(""))) {
+            String text_for_hello  = databaseAccess.getHello();
+            this.textHello.setText("Hello " + text_for_hello + "!!!!!");
+        }else {
+            Intent myIntent = new Intent(MainActivity.this, Settings.class);
+            MainActivity.this.startActivity(myIntent);
+        }
+        databaseAccess.close();
+
+        getData("40.674972", "22.895322");
 
         final ImageButton button = findViewById(R.id.settingsButton);
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                final VibrationEffect vibrationEffect1;
 
-                // this is the only type of the vibration which requires system version Oreo (API 26)
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-
-                    // this effect creates the vibration of default amplitude for 1000ms(1 sec)
-                    vibrationEffect1 = VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE);
-
-                    // it is safe to cancel other vibrations currently taking place
-                    vibrator.cancel();
-                    vibrator.vibrate(vibrationEffect1);
-                }
 
                 Intent myIntent = new Intent(MainActivity.this, Settings.class);
                 //myIntent.putExtra("key", value); //Optional parameters
