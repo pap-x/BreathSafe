@@ -31,11 +31,12 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView textHello;
+    //private TextView textHello;
 
 
 
@@ -59,19 +60,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Get the name from database or go to settting activity
-        this.textHello = (TextView) findViewById(R.id.text_hello);
+        //Get the name from database or go to setting activity
+
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
         databaseAccess.open();
+        String text_for_hello  = databaseAccess.getHello();
+        databaseAccess.close();
 
-        if (!(databaseAccess.getHello().equals(""))) {
-            String text_for_hello  = databaseAccess.getHello();
-            this.textHello.setText("Hello " + text_for_hello + "!!!!!");
+        if (text_for_hello!="") {
+            ((TextView) findViewById(R.id.text_hello)).setText("Hello " + text_for_hello + "!");
         }else {
             Intent myIntent = new Intent(MainActivity.this, Settings.class);
             MainActivity.this.startActivity(myIntent);
         }
-        databaseAccess.close();
 
         getData("40.674972", "22.895322");
 
@@ -205,27 +206,50 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void visualizeUp(Pollutants data) {
+
+        //Change the air today string along with the background color
         String air_today_text = "";
         String color = "#BFE355";
         switch (data.aqi) {
             case "1":
-                air_today_text = "The air today is CLEAN (AQI: "+data.aqi+")";
+                air_today_text = "The air now is CLEAN (AQI: "+data.aqi+")";
                 color = "#BFE355";
                 break;
             case "2":
             case "3":
-                air_today_text = "The air today is MODERATE (AQI: "+data.aqi+")";
+                air_today_text = "The air now is MODERATE (AQI: "+data.aqi+")";
                 color = "#FFD580";
                 break;
             case "4":
             case "5":
-                air_today_text = "The air today is DANGEROUS (AQI: "+data.aqi+")";
+                air_today_text = "The air now is DANGEROUS (AQI: "+data.aqi+")";
                 color = "#F38181";
                 break;
         }
         TextView air_today = (TextView)findViewById(R.id.air_today);
         air_today.setText(air_today_text);
         air_today.setBackgroundColor(Color.parseColor(color));
+
+        //Insert the increased pollutants value string
+        Float[] pollutants = new Float[6];
+        pollutants[0] = Float.parseFloat(data.pm2_5);
+        pollutants[1] = Float.parseFloat(data.pm10);
+        pollutants[2] = Float.parseFloat(data.o3);
+        pollutants[3] = Float.parseFloat(data.co);
+        pollutants[4] = Float.parseFloat(data.so2);
+        pollutants[5] = Float.parseFloat(data.no2);
+
+        String values_string = "";
+        String particle = "PM2.5";
+        for (int i=0; i<pollutants.length; i++) {
+            if (pollutants[i]>10) {
+                //add increased values text
+                values_string = values_string + "Increased values of "+particle+" ("+pollutants[i]+"μg/m3) \n";
+            }
+        }
+        TextView increased_values = (TextView)findViewById(R.id.increased_values);
+        increased_values.setText(values_string);
+
     }
 
     void visualizeForecast(Pollutants[] forecast) {

@@ -103,8 +103,6 @@ public class DatabaseAccess {
             cursor.moveToNext();
         }
 
-
-
         cursor.close();
 
         return textHello;

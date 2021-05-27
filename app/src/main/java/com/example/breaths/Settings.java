@@ -95,10 +95,10 @@ public class  Settings extends AppCompatActivity  implements LocationListener {
 
                     Toast.makeText(Settings.this, name, Toast.LENGTH_SHORT).show();
                 }else if(!(name.equals(""))){
-                    Toast.makeText(Settings.this, "Push the <GET LOCATION> button,please", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Settings.this, "Please press the <GET LOCATION> button", Toast.LENGTH_SHORT).show();
 
                 }else {
-                    Toast.makeText(Settings.this, "Name is empty ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Settings.this, "Name field is empty", Toast.LENGTH_SHORT).show();
 
                 }
             }
