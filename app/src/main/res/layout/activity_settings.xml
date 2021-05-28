@@ -37,34 +37,18 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <Button
-        android:id="@+id/button_location"
-        android:layout_width="wrap_content"
-        android:layout_height="64dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="64dp"
-        android:background="@drawable/info_page_button"
-        android:onClick="getGPSlocation"
-        android:text="@string/get_location"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/condition_spinner" />
-
-    <Button
         android:id="@+id/save_button"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="62dp"
         android:layout_marginEnd="64dp"
         android:background="@drawable/info_page_button"
         android:text="@string/save"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_location" />
+        app:layout_constraintTop_toBottomOf="@+id/text_of_my_location" />
 
     <Spinner
         android:id="@+id/condition_spinner"
@@ -120,5 +104,28 @@
             app:srcCompat="@drawable/ic_baseline_home_48" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="204dp"
+        android:text="My  location is:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/condition_spinner" />
+
+    <TextView
+        android:id="@+id/text_of_my_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="166dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="185dp"
+        android:text="not found"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
