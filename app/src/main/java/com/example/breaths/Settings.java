@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import android.content.Context;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -36,24 +35,14 @@ import com.google.android.gms.tasks.Task;
 
 public class  Settings extends AppCompatActivity   {
 
-
-
-
-
-
+    DatabaseAccess databaseAccess;
 
     // initializing
     // FusedLocationProviderClient
     // object
     FusedLocationProviderClient mFusedLocationClient;
-
+    String user_location = "";
     int PERMISSION_ID = 44;
-
-
-
-
-
-
 
 
     @Override
@@ -66,13 +55,11 @@ public class  Settings extends AppCompatActivity   {
 
         final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        //Show dropdown for conditions
+        //Show dropdown for the user's conditions
         Spinner spinner = (Spinner) findViewById(R.id.condition_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.conditions_array, R.layout.conditions_spinner);
-        // Specify the layout to use when the list of choices appears
-        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
@@ -80,7 +67,16 @@ public class  Settings extends AppCompatActivity   {
 
         final Button save_button = findViewById(R.id.save_button);
 
+        databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess.open();
 
+        //If user is already registered show his/her data
+        User user = databaseAccess.getUser();
+        if (user != null) {
+            ((EditText) findViewById(R.id.name_edittext)).setText(user.userName);
+            spinner.setSelection(user.condId);
+        }
+        databaseAccess.close();
 
 
         save_button.setOnClickListener(new View.OnClickListener() {
@@ -89,36 +85,34 @@ public class  Settings extends AppCompatActivity   {
 
                 // Code here executes on main thread after user presses save button
                 String name = editName.getText().toString();
-                 int conditionId =(int) spinner.getSelectedItemId();
+                int conditionId =(int) spinner.getSelectedItemId();
 
-                 //Button save_button = findViewById(R.id.button_location);
+                if (!name.isEmpty() && !user_location.isEmpty()) {
 
-                TextView mLocation = findViewById(R.id.text_of_my_location);
-
-                String mylocation = save_button.getText().toString();
-
-
-
-                if(!(name.equals("")) &&  !( mylocation == null)) {
-
-                    DataUser data = new DataUser(name,mylocation,conditionId );
+                    User data = new User(name, user_location, conditionId);
                     dbHandler.addUserInfo(data);
 
                     Toast.makeText(Settings.this, "Saved", Toast.LENGTH_SHORT).show();
-                }else if(!(name.equals(""))){
-                    Toast.makeText(Settings.this, "Not found Location Restart the App", Toast.LENGTH_SHORT).show();
 
-                }else {
-                    Toast.makeText(Settings.this, "Name field is empty"+name, Toast.LENGTH_SHORT).show();
+                    //Go to home after 1 second
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Intent myIntent = new Intent(Settings.this, MainActivity.class);
+                    Settings.this.startActivity(myIntent);
+                }
+                else if (user_location.isEmpty()) {
+                    Toast.makeText(Settings.this, "Your location is required", Toast.LENGTH_SHORT).show();
+
+                }
+                else {
+                    Toast.makeText(Settings.this, "Name field is empty", Toast.LENGTH_SHORT).show();
 
                 }
             }
         });
-
-
-
-
-
 
         final ImageButton home_button = findViewById(R.id.homeButton);
         home_button.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +127,6 @@ public class  Settings extends AppCompatActivity   {
             }
         });
     }
-
 
     @SuppressLint("MissingPermission")
     private String getLastLocation() {
@@ -154,14 +147,14 @@ public class  Settings extends AppCompatActivity   {
                         if (location == null) {
                             requestNewLocationData();
                         } else {
-                            String locationComplete;
-                            locationComplete = (location.getLatitude()+","+location.getLongitude());
-                            getSavedLoc(locationComplete);
+                            user_location = (location.getLatitude()+","+location.getLongitude());
+                            displayLocation(user_location);
                         }
                     }
                 });
-            } else {
-                Toast.makeText(this, "Please turn on" + " your location...", Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(this, "Please turn on your GPS", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
 
@@ -240,14 +233,12 @@ public class  Settings extends AppCompatActivity   {
         }
     }
 
-    public void getSavedLoc(String location_) {
+    public void displayLocation(String location_) {
        // Toast.makeText (this, l, Toast.LENGTH_SHORT).show();
 
-        TextView mLocation = findViewById(R.id.text_of_my_location);
+        TextView mLocation = findViewById(R.id.locationText);
 
-        mLocation.setText(location_);
-
-
+        mLocation.setText("Your location is: "+location_);
 
     }
 

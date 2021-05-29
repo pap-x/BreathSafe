@@ -1,23 +1,18 @@
 package com.example.breaths;
 
-public class DataUser {
-
-
-
+public class User {
 
     public int condId;
     public String userName;
-public String locationGPS;
+    public String locationGPS;
 
 
-    public DataUser(String name, String local, int conditionId) {
+    public User(String name, String local, int conditionId) {
         this.userName = name;
         this.locationGPS = local;
         this.condId = conditionId;
 
     }
-
-
 
 
     public String getLocationGPS() {

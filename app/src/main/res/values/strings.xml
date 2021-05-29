@@ -8,8 +8,11 @@
     <string name="second_day"></string>
     <string name="third_day"></string>
     <string name="fourth_day"></string>
-    <string name="air_today">The air today is</string>
+    <string name="name_hint">Name</string>
+    <string name="air_today">Loading Data</string>
+    <string name="forecast">Forecast</string>
     <string name="Hello">Hello</string>
+    <string name="locationText">Your location is: Scanning...</string>
     <string-array name="conditions_array">
         <item>No Condition</item>
         <item>Older adult</item>

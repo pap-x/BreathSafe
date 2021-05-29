@@ -79,61 +79,25 @@ public class DatabaseAccess {
      *
      * @return a List of quotes
      */
+    public User getUser() {
+        User user = null;
 
-    public String getHello() {
-        String textHello = new String();
-
-        Cursor cursor = database.rawQuery("SELECT COLUMN_USER_NAME FROM " + TABLE_USER +  " ORDER BY COLUMN_USER_ID DESC LIMIT 1" , null);
-        cursor.moveToFirst();
-        while (cursor.moveToFirst()) {
-            textHello = (cursor.getString(0));
-            cursor.moveToNext();
-        }
-
-        cursor.close();
-
-        return textHello;
-    }
-
-    public String getLocationData() {
-        String location = " ";
-
-        Cursor cursor = database.rawQuery("SELECT COLUMN_LOCATION FROM " + TABLE_USER +  " ORDER BY COLUMN_USER_ID DESC LIMIT 1" , null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_USER +  " ORDER BY COLUMN_USER_ID DESC LIMIT 1" , null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            location = (cursor.getString(0));
+            user = new User (cursor.getString(1),
+                    cursor.getString(2),
+                    Integer.parseInt(cursor.getString(3)));
             cursor.moveToNext();
         }
+
         cursor.close();
-        return location;
+
+        return user;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    public class PollutantObject {
-        int columnPollutantId,columnPollutantLow,columnPollutantMedium,columnPollutantHigh,columnPollutantDanger;
-        String columnPollutant;
-        public PollutantObject(int columnPollutantId ,String columnPollutant,int columnPollutantLow,int columnPollutantMedium,int columnPollutantHigh,int columnPollutantDanger) {
-            this.columnPollutantId = columnPollutantId;
-            this.columnPollutant = columnPollutant;
-            this.columnPollutantLow = columnPollutantLow;
-            this.columnPollutantMedium = columnPollutantMedium;
-            this.columnPollutantHigh = columnPollutantHigh;
-            this.columnPollutantDanger = columnPollutantDanger;
-        }
-    }
     //retrieve table Pollutant data
-    public ArrayList<Object> getAllPollutantObjects()
+    public ArrayList<Pollutant> getAllPollutantObjects()
     {
 
         String selectQuery = "SELECT * FROM TABLE_POLLUTANTS";
@@ -142,7 +106,7 @@ public class DatabaseAccess {
 
         //this is optional - if you want to return one object
         //you don't need a list
-        ArrayList<Object> objectList = new ArrayList<Object>();
+        ArrayList<Pollutant> objectList = new ArrayList<Pollutant>();
 
         //you should always use the try catch statement incase
         //something goes wrong when trying to read the data
@@ -153,13 +117,13 @@ public class DatabaseAccess {
                 do {
                     //the .getString(int x) method of the cursor returns the column
                     //of the table your query returned
-                    PollutantObject object;
-                    object = new PollutantObject(Integer.parseInt(cursor.getString(0)),
-                            (cursor.getString(0)),
-                            Integer.parseInt(cursor.getString(0)),
-                            Integer.parseInt(cursor.getString(0)),
-                            Integer.parseInt(cursor.getString(0)),
-                            Integer.parseInt(cursor.getString(0)));
+                    Pollutant object;
+                    object = new Pollutant(Integer.parseInt(cursor.getString(0)),
+                            (cursor.getString(1)),
+                            Integer.parseInt(cursor.getString(2)),
+                            Integer.parseInt(cursor.getString(3)),
+                            Integer.parseInt(cursor.getString(4)),
+                            Integer.parseInt(cursor.getString(5)));
                     objectList.add(object);
                 } while (cursor.moveToNext());
             }
@@ -179,21 +143,8 @@ public class DatabaseAccess {
     }
 
 
-
-    public class TextObject {
-        int columnConditionId,columnPollutantsId,columnIndex,columnTextId;
-        String columnText;
-        public TextObject(int columnConditionId ,int columnPollutantsId,int columnIndex,String columnText,int columnTextId) {
-            this.columnConditionId = columnConditionId;
-            this.columnPollutantsId = columnPollutantsId;
-            this.columnIndex = columnIndex;
-            this.columnText = columnText;
-            this.columnTextId = columnTextId;
-
-        }
-    }
     //retrieve table text data
-    public ArrayList<Object> getAllTextObjects()
+    public ArrayList<Text> getAllTextObjects()
     {
         String selectQuery = "SELECT * FROM TABLE_TEXT";
         //get the cursor you're going to use
@@ -201,7 +152,7 @@ public class DatabaseAccess {
 
         //this is optional - if you want to return one object
         //you don't need a list
-        ArrayList<Object> objectList = new ArrayList<Object>();
+        ArrayList<Text> objectList = new ArrayList<Text>();
 
         //you should always use the try catch statement incase
         //something goes wrong when trying to read the data
@@ -212,12 +163,12 @@ public class DatabaseAccess {
                 do {
                     //the .getString(int x) method of the cursor returns the column
                     //of the table your query returned
-                    TextObject object;
-                    object = new TextObject(Integer.parseInt(cursor.getString(0)),
-                            Integer.parseInt(cursor.getString(0)),
-                            Integer.parseInt(cursor.getString(0)),
-                            (cursor.getString(0)),
-                            Integer.parseInt(cursor.getString(0)));
+                    Text object;
+                    object = new Text(cursor.getString(0),
+                            Integer.parseInt(cursor.getString(1)),
+                            Integer.parseInt(cursor.getString(2)),
+                            (cursor.getString(3)),
+                            Integer.parseInt(cursor.getString(4)));
                     objectList.add(object);
                 } while (cursor.moveToNext());
             }
@@ -236,10 +187,47 @@ public class DatabaseAccess {
         return objectList;
     }
 
+    public ArrayList<Text> getTextByPollutantAndIndex(int pollutant, int index)
+    {
+        String selectQuery = "SELECT * FROM TABLE_TEXT WHERE COLUMN_POLLUTANTS_ID="+pollutant+" AND COLUMN_INDEX="+index;
+        //get the cursor you're going to use
+        Cursor cursor = database.rawQuery(selectQuery, null);
 
+        //this is optional - if you want to return one object
+        //you don't need a list
+        ArrayList<Text> objectList = new ArrayList<Text>();
 
-
-
-
+        //you should always use the try catch statement incase
+        //something goes wrong when trying to read the data
+        try
+        {
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    //the .getString(int x) method of the cursor returns the column
+                    //of the table your query returned
+                    Text object;
+                    object = new Text(cursor.getString(0),
+                            Integer.parseInt(cursor.getString(1)),
+                            Integer.parseInt(cursor.getString(2)),
+                            (cursor.getString(3)),
+                            Integer.parseInt(cursor.getString(4)));
+                    objectList.add(object);
+                } while (cursor.moveToNext());
+            }
+        }
+        catch (SQLiteException e)
+        {
+            Log.d("SQL Error", e.getMessage());
+            return null;
+        }
+        finally
+        {
+            //release all your resources
+            cursor.close();
+            //database.close();
+        }
+        return objectList;
+    }
 
 }

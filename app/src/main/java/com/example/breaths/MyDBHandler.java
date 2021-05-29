@@ -46,7 +46,7 @@ public class MyDBHandler extends SQLiteAssetHelper {
 
 
     //method to add data to the db
-    public void addUserInfo(DataUser data) {
+    public void addUserInfo(User data) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_NAME, data.getUserName());
         values.put(COLUMN_LOCATION, data.getLocationGPS());

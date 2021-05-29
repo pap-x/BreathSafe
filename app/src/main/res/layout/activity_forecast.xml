@@ -30,7 +30,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="BreatheSafe"
+            android:text="@string/app_name"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -93,9 +93,9 @@
             app:ael_expanded="false"
             app:ael_orientation="vertical">
             <TextView
-                android:id="@+id/pm2_5_1"
+                android:id="@+id/forecast_text1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:padding="10dp"
                 android:text="@string/fourth_day"
                 android:textColor="#333"
@@ -108,7 +108,7 @@
             android:id="@+id/accordion_header2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_orange_light"
+            android:background="#BFE355"
             android:clickable="true">
 
             <TextView
@@ -144,9 +144,9 @@
             app:ael_expanded="false"
             app:ael_orientation="vertical">
             <TextView
-                android:id="@+id/pm2_5_2"
+                android:id="@+id/forecast_text2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:padding="10dp"
                 android:text="@string/fourth_day"
                 android:textColor="#333"
@@ -159,7 +159,7 @@
             android:id="@+id/accordion_header3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#F38181"
+            android:background="#BFE355"
             android:clickable="true">
 
             <TextView
@@ -195,9 +195,9 @@
             app:ael_expanded="false"
             app:ael_orientation="vertical">
             <TextView
-                android:id="@+id/pm2_5_3"
+                android:id="@+id/forecast_text3"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:padding="10dp"
                 android:text="@string/fourth_day"
                 android:textColor="#333"
@@ -210,7 +210,7 @@
             android:id="@+id/accordion_header4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFD580"
+            android:background="#BFE355"
             android:clickable="true">
 
             <TextView
@@ -246,14 +246,17 @@
             app:ael_expanded="false"
             app:ael_orientation="vertical">
             <TextView
-                android:id="@+id/pm2_5_4"
+                android:id="@+id/forecast_text4"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:padding="10dp"
                 android:text="@string/fourth_day"
                 android:textColor="#333"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/content4" />
         </com.github.aakira.expandablelayout.ExpandableLinearLayout>
 
     </LinearLayout>
@@ -265,7 +268,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:text="Forecast"
+        android:text="@string/forecast"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

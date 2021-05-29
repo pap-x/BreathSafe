@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+
     implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
 

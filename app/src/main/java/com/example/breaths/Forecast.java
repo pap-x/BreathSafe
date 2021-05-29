@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -27,10 +28,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class Forecast extends AppCompatActivity {
+
+    DatabaseAccess databaseAccess;
 
     class Pollutants {
         public String day, aqi, pm2_5, pm10, o3, co, so2, no2;
@@ -55,12 +59,23 @@ public class Forecast extends AppCompatActivity {
         home_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent myIntent = new Intent(Forecast.this, MainActivity.class);
-                //myIntent.putExtra("key", value); //Optional parameters
                 Forecast.this.startActivity(myIntent);
             }
         });
 
-        getData("20.0000", "40.0000");
+        databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess.open();
+
+        //get the user from the database
+        User user = databaseAccess.getUser();
+        if (user != null) {
+            //String[] location = user.locationGPS.split(",");
+            getData("20", "40");
+        }
+        else {
+            Toast.makeText(this, "Your location was not found, go to Settings", Toast.LENGTH_LONG).show();
+        }
+        databaseAccess.close();
 
     }
 
@@ -137,19 +152,19 @@ public class Forecast extends AppCompatActivity {
 
     void visualize(Pollutants[] forecast) {
         if (forecast[0].day!= null) {
-            for (int i = 1; i<5; i++) {
+            for (int day = 1; day<5; day++) {
                 //Put the weekday
-                String titleID = "accordion_title" + i;
+                String titleID = "accordion_title" + day;
                 int resID = getResources().getIdentifier(titleID, "id", getPackageName());
                 TextView textViewToChange = (TextView) findViewById(resID);
-                textViewToChange.setText(forecast[i].day);
+                textViewToChange.setText(forecast[day].day);
 
                 //Change the color
-                String headerID = "accordion_header" + i;
+                String headerID = "accordion_header" + day;
                 resID = getResources().getIdentifier(headerID, "id", getPackageName());
                 final RelativeLayout layoutToChange = (RelativeLayout) findViewById(resID);
-                System.out.println(forecast[i].aqi);
-                switch (forecast[i].aqi) {
+                System.out.println(forecast[day].aqi);
+                switch (forecast[day].aqi) {
                     case "1" :
                         layoutToChange.setBackgroundColor(Color.parseColor("#BFE355"));
                         break;
@@ -162,11 +177,57 @@ public class Forecast extends AppCompatActivity {
                         layoutToChange.setBackgroundColor(Color.parseColor("#F38181"));
                         break;
                 }
-                //Put the PM2.5
-                String pm2_5ID = "pm2_5_" + i;
-                resID = getResources().getIdentifier(pm2_5ID, "id", getPackageName());
-                textViewToChange = (TextView) findViewById(resID);
-                textViewToChange.setText("PM2.5: "+forecast[i].pm2_5);
+
+
+                //Insert the increased pollutants value string
+                Float[] pollutants = new Float[6];
+                pollutants[0] = Float.parseFloat(forecast[day].pm2_5);
+                pollutants[1] = Float.parseFloat(forecast[day].pm10);
+                pollutants[2] = Float.parseFloat(forecast[day].o3);
+                pollutants[3] = Float.parseFloat(forecast[day].co);
+                pollutants[4] = Float.parseFloat(forecast[day].so2);
+                pollutants[5] = Float.parseFloat(forecast[day].no2);
+
+                String[] pollutant_names = new String[6];
+                pollutant_names[0] = "PM2.5";
+                pollutant_names[1] = "PM10";
+                pollutant_names[2] = "Ozone";
+                pollutant_names[3] = "Carbon Monoxide";
+                pollutant_names[4] = "Sulfur Dioxide";
+                pollutant_names[5] = "Nitrogen Dioxide";
+
+                //Compare pollutant values from API with baselines from the DB and update the text
+
+                //get the pollutants table
+                DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+                databaseAccess.open();
+                ArrayList<Pollutant> pollutant_data  = databaseAccess.getAllPollutantObjects();
+                String values_string = "";
+                for (int i=0; i<pollutants.length; i++) {
+                    if (pollutants[i]>pollutant_data.get(i).columnPollutantDanger) {
+                        //add increased values text
+                        values_string = values_string + "Dangerous amounts of "+pollutant_names[i]+" ("+pollutants[i]+"μg/m3) \n";
+                    }
+                    else if (pollutants[i]>pollutant_data.get(i).columnPollutantHigh) {
+                        //add increased values text
+                        values_string = values_string + "High amounts of "+pollutant_names[i]+" ("+pollutants[i]+"μg/m3) \n";
+                    }
+                    else if (pollutants[i]>pollutant_data.get(i).columnPollutantMedium) {
+                        //add increased values text
+                        values_string = values_string + "Moderate amounts of "+pollutant_names[i]+" ("+pollutants[i]+"μg/m3) \n";
+                    }
+                    else if (pollutants[i]>pollutant_data.get(i).columnPollutantLow) {
+                        //add increased values text
+                        values_string = values_string + "Increased amounts of "+pollutant_names[i]+" ("+pollutants[i]+"μg/m3) \n";
+                    }
+                }
+
+                //Insert increased values text
+                if (values_string=="") values_string = "The air will be clean on "+forecast[day].day;
+
+                String forecast_text = "forecast_text" + day;
+                resID = getResources().getIdentifier(forecast_text, "id", getPackageName());
+                ((TextView) findViewById(resID)).setText(values_string);
             }
         }
     }

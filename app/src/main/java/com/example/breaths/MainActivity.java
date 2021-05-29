@@ -33,13 +33,15 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     //private TextView textHello;
 
-
+    DatabaseAccess databaseAccess;
+    User user = null;
 
 
     class Pollutants {
@@ -63,38 +65,30 @@ public class MainActivity extends AppCompatActivity {
 
         //Get the name from database or go to setting activity
 
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess = DatabaseAccess.getInstance(this);
         databaseAccess.open();
 
-        //get the name of the user from the database
-        String text_for_hello  = databaseAccess.getHello();
-        //get the location of the user from the database
-        String myLocation  = databaseAccess.getLocationData();
+        //get the user from the database
+        user = databaseAccess.getUser();
         databaseAccess.close();
 
+        if (user != null) {
+            ((TextView) findViewById(R.id.text_hello)).setText("Hello " + user.userName + "!");
 
-        if (text_for_hello !="") {
-            ((TextView) findViewById(R.id.text_hello)).setText("Hello " + text_for_hello + "!");
+            //spilt the location string to lat and long
+            //String[] result = user.locationGPS.split("[,]", 0);
 
-            //spilt the mylocation string
-            List<String> list1= new ArrayList<>();
-            String[] result = myLocation.split("[,]", 0);
-            for(String myStr: result) {
-                list1.add(myStr);
-            }
-            String latitude = list1.get(0);
-            String longitude = list1.get(1);
+            getData("20", "40");
 
-            getData(latitude, longitude);
-
-        }else {
+        }
+        else {
             Intent myIntent = new Intent(MainActivity.this, Settings.class);
             MainActivity.this.startActivity(myIntent);
         }
-        //getData("40.674972", "22.895322");
 
         final ImageButton button = findViewById(R.id.settingsButton);
 
+        //When clicking on Settings button go to Settings
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
@@ -256,16 +250,80 @@ public class MainActivity extends AppCompatActivity {
         pollutants[4] = Float.parseFloat(data.so2);
         pollutants[5] = Float.parseFloat(data.no2);
 
+        String[] pollutant_names = new String[6];
+        pollutant_names[0] = "PM2.5";
+        pollutant_names[1] = "PM10";
+        pollutant_names[2] = "Ozone";
+        pollutant_names[3] = "Carbon Monoxide";
+        pollutant_names[4] = "Sulfur Dioxide";
+        pollutant_names[5] = "Nitrogen Dioxide";
+
+        Integer[] pollutant_indexes = new Integer[6];
+
+        //Compare pollutant values from API with baselines from the DB and update the text
+
+        //get the pollutants table
+        databaseAccess.open();
+        ArrayList<Pollutant> pollutant_data  = databaseAccess.getAllPollutantObjects();
         String values_string = "";
-        String particle = "PM2.5";
         for (int i=0; i<pollutants.length; i++) {
-            if (pollutants[i]>10) {
+            if (pollutants[i]>pollutant_data.get(i).columnPollutantDanger) {
                 //add increased values text
-                values_string = values_string + "Increased values of "+particle+" ("+pollutants[i]+"μg/m3) \n";
+                values_string = values_string + "Dangerous amounts of "+pollutant_names[i]+" ("+pollutants[i]+"μg/m3) \n";
+                pollutant_indexes[i] = 5;
+            }
+            else if (pollutants[i]>pollutant_data.get(i).columnPollutantHigh) {
+                //add increased values text
+                values_string = values_string + "High amounts of "+pollutant_names[i]+" ("+pollutants[i]+"μg/m3) \n";
+                pollutant_indexes[i] = 4;
+            }
+            else if (pollutants[i]>pollutant_data.get(i).columnPollutantMedium) {
+                //add increased values text
+                values_string = values_string + "Moderate amounts of "+pollutant_names[i]+" ("+pollutants[i]+"μg/m3) \n";
+                pollutant_indexes[i] = 3;
+            }
+            else if (pollutants[i]>pollutant_data.get(i).columnPollutantLow) {
+                //add increased values text
+                values_string = values_string + "Increased amounts of "+pollutant_names[i]+" ("+pollutants[i]+"μg/m3) \n";
+                pollutant_indexes[i] = 2;
+            }
+            else {
+                pollutant_indexes[i] = 1;
             }
         }
-        TextView increased_values = (TextView)findViewById(R.id.increased_values);
-        increased_values.setText(values_string);
+
+        //Insert increased values text
+        ((TextView) findViewById(R.id.increased_values)).setText(values_string);
+
+        String advice_text = "";
+        //If user is set, get the condition - else set condition as 0
+        String user_condition = user!=null ? Integer.toString(user.condId):"0";
+
+        if (Integer.parseInt(data.aqi)>2) {
+            databaseAccess.open();
+            /*
+            For each pollutant, if it has a pollution index >2, get the proper text from the database.
+            If the condition of the user is affected by the pollutant AND the index value is the max index
+            of all the pollutants, display the text.
+             */
+            int maxIndex = 0;
+            ArrayList<Text> text_data;
+            for (int i = 0; i < pollutant_indexes.length; i++) {
+                if (pollutant_indexes[i] > 2) {
+                    text_data = databaseAccess.getTextByPollutantAndIndex(i+1, pollutant_indexes[i]);
+                    String[] conditions = text_data.get(0).columnConditionIdList.split(",");
+                    if (Arrays.stream(conditions).anyMatch(user_condition::equals) && pollutant_indexes[i] > maxIndex) {
+                        advice_text = text_data.get(0).columnText;
+                    }
+                }
+            }
+        }
+        else if (data.aqi=="2" && user_condition!="0") {
+            advice_text = "If you are unusually sensitive consider reducing heavy outdoor exertion";
+        }
+
+        ((TextView) findViewById(R.id.text_main)).setText(advice_text);
+
 
     }
 
@@ -307,7 +365,6 @@ public class MainActivity extends AppCompatActivity {
     //On click on Forecast Layout got to forecast page
     public void goToForecast(View view) {
         Intent myIntent = new Intent(MainActivity.this, Forecast.class);
-        //myIntent.putExtra("key", value); //Optional parameters
         MainActivity.this.startActivity(myIntent);
     }
 
