@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -64,17 +65,33 @@ public class MainActivity extends AppCompatActivity {
 
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
         databaseAccess.open();
+
+        //get the name of the user from the database
         String text_for_hello  = databaseAccess.getHello();
+        //get the location of the user from the database
+        String myLocation  = databaseAccess.getLocationData();
         databaseAccess.close();
 
-        if (text_for_hello!="") {
+
+        if (text_for_hello !="") {
             ((TextView) findViewById(R.id.text_hello)).setText("Hello " + text_for_hello + "!");
+
+            //spilt the mylocation string
+            List<String> list1= new ArrayList<>();
+            String[] result = myLocation.split("[,]", 0);
+            for(String myStr: result) {
+                list1.add(myStr);
+            }
+            String latitude = list1.get(0);
+            String longitude = list1.get(1);
+
+            getData(latitude, longitude);
+
         }else {
             Intent myIntent = new Intent(MainActivity.this, Settings.class);
             MainActivity.this.startActivity(myIntent);
         }
-
-        getData("40.674972", "22.895322");
+        //getData("40.674972", "22.895322");
 
         final ImageButton button = findViewById(R.id.settingsButton);
 
