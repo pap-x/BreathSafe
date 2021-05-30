@@ -81,8 +81,8 @@ public class  Settings extends AppCompatActivity   {
 
         save_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                MyDBHandler dbHandler = new MyDBHandler(Settings.this);
 
+                MyDBHandler dbHandler = new MyDBHandler(Settings.this);
                 // Code here executes on main thread after user presses save button
                 String name = editName.getText().toString();
                 int conditionId =(int) spinner.getSelectedItemId();
@@ -160,8 +160,7 @@ public class  Settings extends AppCompatActivity   {
 
             }
         } else {
-            // if permissions aren't available,
-            // request for permissions
+            // request for permissions if  aren't available,
             requestPermissions();
         }
         return null;
@@ -200,10 +199,6 @@ public class  Settings extends AppCompatActivity   {
     private boolean checkPermissions() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
-        // If we want background location
-        // on Android 10.0 and higher,
-        // use:
-        // ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
 
     // method to request for permissions
@@ -232,9 +227,8 @@ public class  Settings extends AppCompatActivity   {
             }
         }
     }
-
+    //display location to the activity
     public void displayLocation(String location_) {
-       // Toast.makeText (this, l, Toast.LENGTH_SHORT).show();
 
         TextView mLocation = findViewById(R.id.locationText);
 
