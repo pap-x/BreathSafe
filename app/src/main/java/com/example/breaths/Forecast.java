@@ -69,8 +69,8 @@ public class Forecast extends AppCompatActivity {
         //get the user from the database
         User user = databaseAccess.getUser();
         if (user != null) {
-            //String[] location = user.locationGPS.split(",");
-            getData("20", "40");
+            String[] location = user.locationGPS.split(",");
+            getData(location[0], location[1]);
         }
         else {
             Toast.makeText(this, "Your location was not found, go to Settings", Toast.LENGTH_LONG).show();

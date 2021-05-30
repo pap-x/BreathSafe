@@ -76,9 +76,9 @@ public class MainActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.text_hello)).setText("Hello " + user.userName + "!");
 
             //spilt the location string to lat and long
-            //String[] result = user.locationGPS.split("[,]", 0);
+            String[] location = user.locationGPS.split("[,]", 0);
 
-            getData("20", "40");
+            getData(location[0], location[1]);
 
         }
         else {
@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
                         String day = dateFormat.format(date );
                         System.out.println(day);
 
+                        //Insert the retrieved to an object in order to be visualized
                         Pollutants data = new Pollutants(day,
                                 details.getJSONObject("main").getString("aqi"),
                                 details.getJSONObject("components").getString("pm2_5"),
@@ -268,17 +269,17 @@ public class MainActivity extends AppCompatActivity {
         String values_string = "";
         for (int i=0; i<pollutants.length; i++) {
             if (pollutants[i]>pollutant_data.get(i).columnPollutantDanger) {
-                //add increased values text
+                //add dangerous values text
                 values_string = values_string + "Dangerous amounts of "+pollutant_names[i]+" ("+pollutants[i]+"μg/m3) \n";
                 pollutant_indexes[i] = 5;
             }
             else if (pollutants[i]>pollutant_data.get(i).columnPollutantHigh) {
-                //add increased values text
+                //add high values text
                 values_string = values_string + "High amounts of "+pollutant_names[i]+" ("+pollutants[i]+"μg/m3) \n";
                 pollutant_indexes[i] = 4;
             }
             else if (pollutants[i]>pollutant_data.get(i).columnPollutantMedium) {
-                //add increased values text
+                //add moderate values text
                 values_string = values_string + "Moderate amounts of "+pollutant_names[i]+" ("+pollutants[i]+"μg/m3) \n";
                 pollutant_indexes[i] = 3;
             }
@@ -291,7 +292,6 @@ public class MainActivity extends AppCompatActivity {
                 pollutant_indexes[i] = 1;
             }
         }
-
         //Insert increased values text
         ((TextView) findViewById(R.id.increased_values)).setText(values_string);
 
@@ -317,13 +317,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+            databaseAccess.close();
         }
         else if (data.aqi=="2" && user_condition!="0") {
             advice_text = "If you are unusually sensitive consider reducing heavy outdoor exertion";
         }
 
         ((TextView) findViewById(R.id.text_main)).setText(advice_text);
-
 
     }
 
