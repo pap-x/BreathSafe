@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
             }
             databaseAccess.close();
         }
-        else if (data.aqi=="2" && user_condition!="0") {
+        else if (data.aqi.equals("2") && !user_condition.equals("0")) {
             advice_text = "If you are unusually sensitive consider reducing heavy outdoor exertion";
         }
 
