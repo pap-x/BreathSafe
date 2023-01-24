@@ -114,7 +114,7 @@ public class Forecast extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             for (int i = 0; i<5; i++) {
-                                JSONObject details = response.getJSONArray("list").getJSONObject(132+(i*24));   //calculate date numbers by adding 24 hours per day
+                                JSONObject details = response.getJSONArray("list").getJSONObject(11+(i*24));   //calculate date numbers by adding 24 hours per day
 
                                 //Get day of the week
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE");

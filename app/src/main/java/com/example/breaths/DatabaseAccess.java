@@ -66,13 +66,16 @@ public class DatabaseAccess {
     public User getUser() {
         User user = null;
 
-        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_USER +  " ORDER BY COLUMN_USER_ID DESC LIMIT 1" , null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            user = new User (cursor.getString(1),           // get his name
-                    cursor.getString(2),                    // get his location
-                    Integer.parseInt(cursor.getString(3)));     //get his condition choice
-            cursor.moveToNext();
+        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_USER + " ORDER BY COLUMN_USER_ID DESC LIMIT 1", null);
+        Log.v("db: ", Integer.toString(cursor.getCount()));
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                user = new User(cursor.getString(1),           // get his name
+                        cursor.getString(2),                    // get his location
+                        Integer.parseInt(cursor.getString(3)));     //get his condition choice
+                cursor.moveToNext();
+            }
         }
 
         cursor.close();
